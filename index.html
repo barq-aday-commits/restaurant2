@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>مطعم شط العرب | طعم الأصالة</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<style>
+:root{--silver:#e2e2e2;--rust:#b7410e;--bronze-glow:#cd7f32;--white:#ffffff;--dark:#2c2c2c}*{margin:0;padding:0;box-sizing:border-box;font-family:Tajawal,sans-serif}
+body{background-color:var(--silver);color:var(--rust);line-height:1.6;overflow-x:hidden}
+header{background:linear-gradient(rgba(0,0,0,0.65),rgba(0,0,0,0.65)),url('https://image2url.com/r2/default/images/1769094527262-4bf2ed7c-3883-4409-a8dc-66169d988cfa.jpg');background-size:cover;background-position:center;height:60vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;color:#fff;padding:20px}
+.logo-text{font-size:2.8rem;font-weight:800;color:var(--bronze-glow);text-shadow:0 0 10px rgba(205,127,50,0.6);margin-bottom:5px}
+.hero-desc{font-size:1.2rem;color:var(--silver);max-width:500px;margin-bottom:25px;font-weight:400}
+.section-title{text-align:center;padding:40px 0 20px;font-size:2rem;color:var(--bronze-glow);font-weight:700}
+.menu-container{padding:10px 20px 30px;display:grid;grid-template-columns:repeat(auto-fill, minmax(280px, 1fr));gap:20px;max-width:1200px;margin:0 auto}
+.menu-card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.08);transition:.3s}
+.menu-card img{width:100%;height:200px;object-fit:cover}
+.card-info{padding:15px;text-align:right}
+.card-info h3{color:var(--rust);font-size:1.2rem;margin-bottom:8px}
+.price{font-weight:800;color:var(--bronze-glow);font-size:1.1rem;display:block;margin:10px 0}
+.loading-text{text-align:center;width:100%;grid-column:1/-1;padding:50px;font-size:1.2rem;color:var(--dark)}
+footer{background:var(--dark);color:var(--silver);padding:40px 20px;text-align:center;margin-top:50px}
+</style></head>
+<body>
+<header><h1 class="logo-text">شط العرب</h1><p class="hero-desc">حيث يلتقي عبق الرافدين بأشهى المأكولات 😍</p></header>
+<section id="menu"><h2 class="section-title">أطباقنا المميزة</h2>
+<div class="menu-container" id="food-list"><p class="loading-text">جاري تحضير قائمة الطعام...</p></div></section>
+<footer><p>جميع الحقوق محفوظة © 2026 | مطعم شط العرب</p></footer>
+
+<script>
+// هوية سرية للبيانات
+const _k = '1laj-jG9Q18PIEkUivgsTG_iZN4nrbZsAnLu_9ZuMyk0';
+const _u = `https://docs.google.com/spreadsheets/d/${_k}/gviz/tq?tqx=out:json`;
+
+fetch(_u)
+    .then(r => r.text())
+    .then(d => {
+        const j = JSON.parse(d.substring(47, d.length - 2));
+        const rows = j.table.rows;
+        const list = document.getElementById('food-list');
+        list.innerHTML = ''; 
+
+        for (let i = 1; i < rows.length; i++) {
+            const c = rows[i].c;
+            const n = c[0] ? c[0].v : '';
+            const ds = c[1] ? c[1].v : '';
+            const p = c[2] ? c[2].v : '';
+            const im = c[3] ? c[3].v : '';
+
+            if(n) {
+                list.innerHTML += `
+                    <div class="menu-card">
+                        <img src="${im}" alt="${n}">
+                        <div class="card-info">
+                            <h3>${n}</h3>
+                            <p>${ds}</p>
+                            <span class="price">${p} د.ع</span>
+                            <button onclick="alert('سيتم توجيهك للمراسلة لتأكيد الطلب')" style="background:var(--rust);color:#fff;border:none;padding:10px;border-radius:6px;width:100%;cursor:pointer;font-weight:bold">اطلب الآن</button>
+                        </div>
+                    </div>`;
+            }
+        }
+    })
+    .catch(e => {
+        document.getElementById('food-list').innerHTML = '<p>شكراً لزيارتكم، المنيو متاح حالياً عبر صفحتنا.</p>';
+    });
+</script>
+</body></html>
