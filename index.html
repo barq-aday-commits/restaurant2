@@ -3,207 +3,217 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>شط العرب | المنيو الملكي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>شط العرب | Luxury Menu</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;500;800&family=Tajawal:wght@300;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #cd7f32; --dark: #0a0a0a; --card-bg: #161616; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
-        body { background: var(--dark); color: white; scroll-behavior: smooth; }
-
-        /* الهيدر والقائمة الجانبية */
-        .top-nav { position: fixed; top: 0; width: 100%; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.95); border-bottom: 2px solid var(--gold); }
-        .sidebar { position: fixed; top: 0; right: -300px; width: 300px; height: 100%; background: #111; z-index: 3000; transition: 0.5s; border-left: 2px solid var(--gold); padding: 25px; overflow-y: auto; }
-        .sidebar.active { right: 0; }
-        .cat-item { display: block; color: #ccc; padding: 15px; border-bottom: 1px solid #222; cursor: pointer; font-weight: bold; transition: 0.3s; }
-        .cat-item:hover { color: var(--gold); padding-right: 35px; }
-
-        /* الترحيب */
-        .hero {
-            height: 60vh;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://image2url.com/r2/default/images/1769094527262-4bf2ed7c-3883-4409-a8dc-66169d988cfa.jpg');
-            background-size: cover; background-position: center;
-            display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; border-bottom: 3px solid var(--gold);
+        :root { 
+            --gold: #b8860b; 
+            --bronze: #8e6d45;
+            --dark-bg: #050505;
+            --card-glass: rgba(255, 255, 255, 0.03);
         }
-        .hero h1 { font-size: 3.5rem; color: var(--gold); font-weight: 900; }
-        .hero-btns { display: flex; gap: 15px; margin-top: 25px; }
-        .hero-btn, .loc-btn { padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: bold; transition: 0.3s; }
-        .hero-btn { background: var(--gold); color: black; }
-        .loc-btn { border: 2px solid var(--gold); color: var(--gold); }
-
-        /* الأقسام والقوالب */
-        .section-title { text-align: center; padding: 40px 0; color: var(--gold); font-size: 2.2rem; }
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; padding: 20px; max-width: 1300px; margin: 0 auto; }
         
-        .food-card { 
-            background: var(--card-bg); border-radius: 20px; overflow: hidden; 
-            border: 1px solid #333; display: flex; flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.3s;
-        }
-        .food-card:hover { border-color: var(--gold); transform: translateY(-5px); }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        body { background: var(--dark-bg); color: #e0e0e0; font-family: 'Tajawal', sans-serif; overflow-x: hidden; }
+        h1, h2, h3 { font-family: 'Cairo', sans-serif; letter-spacing: -0.5px; }
 
-        /* عرض الصور كاملة دون قص */
-        .img-container { width: 100%; background: #000; line-height: 0; }
-        .food-card img { width: 100%; height: auto; max-height: 450px; object-fit: contain; display: block; }
+        .small-text { font-size: 0.8rem; color: #888; letter-spacing: 1px; }
+        .bronze-text { color: var(--bronze); font-weight: 500; }
 
-        .info { padding: 20px; text-align: center; }
-        .info h3 { font-size: 1.5rem; margin-bottom: 10px; color: #fff; }
-        .price { color: var(--gold); font-weight: 900; font-size: 1.4rem; display: block; margin-bottom: 15px; }
-        .add-btn { background: var(--gold); color: black; border: none; padding: 14px; border-radius: 12px; width: 100%; cursor: pointer; font-weight: 900; }
+        .nav-bar { position: fixed; top: 0; width: 100%; padding: 20px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(5,5,5,0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(142,109,69,0.2); }
+        .logo { font-size: 1.2rem; font-weight: 800; color: var(--gold); }
 
-        /* الفوتر (تم حذف النص الزائد) */
-        footer { background: #050505; padding: 40px 20px; text-align: center; border-top: 1px solid var(--gold); margin-top: 80px; }
-        .social-icons { display: flex; justify-content: center; gap: 25px; margin-bottom: 20px; }
-        .social-icons a { color: var(--gold); font-size: 2.2rem; transition: 0.3s; }
-        .social-icons a:hover { transform: scale(1.2); color: white; }
-        .copyright { color: #666; font-size: 0.9rem; }
+        .hero-section { height: 70vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(to bottom, rgba(5,5,5,0.2), var(--dark-bg)), url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80'); background-size: cover; background-position: center; }
+        .hero-title { font-size: 2.5rem; margin-bottom: 15px; color: #fff; }
+        .btn-modern { padding: 10px 25px; border-radius: 2px; border: 1px solid var(--bronze); background: transparent; color: #fff; cursor: pointer; font-size: 0.8rem; transition: 0.4s; margin: 5px; text-transform: uppercase; }
+        .btn-modern:hover { background: var(--bronze); color: #000; }
 
-        /* السلة والبيانات */
-        .cart-float { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: #25D366; color: white; padding: 18px; border-radius: 50px; display: none; justify-content: space-between; z-index: 2000; cursor: pointer; font-weight: bold; }
-        .cart-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 4000; display: none; padding: 20px; overflow-y: auto; }
-        .cart-content { background: #1a1a1a; border-radius: 25px; padding: 25px; max-width: 500px; margin: 40px auto; border: 1px solid var(--gold); }
-        .user-input { width: 100%; padding: 14px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #444; background: #000; color: white; }
+        .side-panel { position: fixed; top: 0; right: -100%; width: 100%; height: 100%; background: #080808; z-index: 4000; transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1); padding: 40px; display: flex; flex-direction: column; }
+        .side-panel.active { right: 0; }
+        .panel-link { font-size: 1.5rem; color: #fff; text-decoration: none; margin: 15px 0; font-family: 'Cairo'; font-weight: 300; display: block; }
 
-        @media (max-width: 480px) {
-            .menu-grid { grid-template-columns: 1fr; }
-        }
+        .horizontal-scroll { display: flex; overflow-x: auto; gap: 15px; padding: 20px; scrollbar-width: none; }
+        .horizontal-scroll::-webkit-scrollbar { display: none; }
+        .mini-card { min-width: 140px; background: var(--card-glass); border-radius: 4px; padding: 10px; border: 1px solid rgba(255,255,255,0.05); }
+        .mini-card img { width: 100%; height: 100px; object-fit: cover; border-radius: 2px; margin-bottom: 8px; }
+        .mini-card h4 { font-size: 0.75rem; font-weight: 500; height: 2.2em; overflow: hidden; }
+
+        .cart-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: #fff; color: #000; padding: 15px 25px; border-radius: 4px; display: none; justify-content: space-between; align-items: center; z-index: 2000; cursor: pointer; box-shadow: 0 20px 40px rgba(0,0,0,0.4); animation: slideUp 0.5s forwards; }
+        @keyframes slideUp { from { bottom: -100px; } to { bottom: 20px; } }
+
+        #fire-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000; display: none; overflow-y: auto; }
+        .fire-gradient { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 100%, #301400, #000); z-index: -1; animation: firePulse 4s infinite alternate; }
+        @keyframes firePulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        .sub-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark-bg); z-index: 6000; display: none; padding: 40px; text-align: center; }
+        .sub-page h2 { margin-top: 50px; color: var(--gold); }
     </style>
 </head>
 <body>
 
-<div class="top-nav">
-    <i class="fas fa-bars" onclick="toggleSidebar()" style="color:var(--gold); font-size:1.8rem; cursor:pointer;"></i>
-    <span style="font-weight: 900; color: var(--gold); font-size: 1.5rem;">شط العرب</span>
-    <div style="width:30px"></div>
+<div class="nav-bar">
+    <i class="fas fa-align-right" onclick="toggleSidePanel()" style="cursor:pointer; font-size:1.2rem;"></i>
+    <div class="logo">شط العرب</div>
+    <div style="width:20px"></div>
 </div>
 
-<div class="sidebar" id="sidebar">
-    <i class="fas fa-times" onclick="toggleSidebar()" style="font-size:1.8rem; color:var(--gold); cursor:pointer;"></i>
-    <h2 style="color: var(--gold); margin: 25px 0;">الأصناف</h2>
-    <div id="side-menu">
-        <div class="cat-item" onclick="filter('الكل')">الكل</div>
-        <div class="cat-item" onclick="filter('مندي')">مندي</div>
-        <div class="cat-item" onclick="filter('مشاوي')">مشاوي</div>
-        <div class="cat-item" onclick="filter('سمك')">سمك</div>
-        <div class="cat-item" onclick="filter('باجة')">باجة</div>
-        <div class="cat-item" onclick="filter('محاشي')">محاشي</div>
+<div class="side-panel" id="side-panel">
+    <i class="fas fa-times" onclick="toggleSidePanel()" style="position:absolute; top:30px; left:30px; font-size:1.5rem;"></i>
+    <div style="margin-top:60px;">
+        <a href="javascript:void(0)" onclick="filter('الكل')" class="panel-link">القائمة كاملة</a>
+        <a href="javascript:void(0)" onclick="showSub('why-us')" class="panel-link">لماذا نحن؟</a>
+        <a href="javascript:void(0)" onclick="showSub('contact-us')" class="panel-link">تواصل معنا</a>
     </div>
 </div>
 
-<section class="hero">
-    <h1>شط العرب</h1>
+<div id="why-us" class="sub-page">
+    <i class="fas fa-times" onclick="hideSub('why-us')" style="position:absolute; top:30px; left:30px; font-size:1.5rem;"></i>
+    <h2>لماذا شط العرب؟</h2>
+    <p style="margin-top:30px; color:#aaa; font-weight:300;">نحن نؤمن أن الطعام ليس مجرد وجبة، بل هو تجربة إبداعية تُصنع بأعلى معايير الجودة وبنفس عراقي أصيل.</p>
+</div>
+
+<div id="contact-us" class="sub-page">
+    <i class="fas fa-times" onclick="hideSub('contact-us')" style="position:absolute; top:30px; left:30px; font-size:1.5rem;"></i>
+    <h2>تواصل مباشر</h2>
+    <p style="margin:30px 0; color:#aaa;">نسعد دائماً بخدمتكم وتلقي طلباتكم</p>
+    <button class="btn-modern" onclick="window.open('https://wa.me/9647887603449')">واتساب الإدارة</button>
+</div>
+
+<section class="hero-section">
+    <span class="small-text">S H A T T . A L A R A B</span>
+    <h1 class="hero-title">فن المذاق العراقي</h1>
     <div class="hero-btns">
-        <a href="#menu-anchor" class="hero-btn">عرض المنيو</a>
-        <a href="https://maps.google.com" target="_blank" class="loc-btn">موقعنا</a>
+        <button class="btn-modern" onclick="openFireMenu()">استكشف المنيو</button>
+        <button class="btn-modern" style="border-color:#555;" onclick="window.open('http://google.com/maps')">الموقع</button>
     </div>
 </section>
 
-<div id="menu-anchor"></div>
-<h2 class="section-title" id="current-cat-title">قائمة الطعام</h2>
-<div class="menu-grid" id="menu-container"></div>
+<div style="padding:40px 20px 0;">
+    <span class="small-text bronze-text">S P E C I A L S</span>
+    <h2 style="font-size: 1.2rem; margin-top:5px;">عروض مميزة</h2>
+</div>
+<div id="featured-grid" style="padding:20px; display: grid; grid-template-columns: 1fr 1fr; gap:10px;"></div>
 
-<footer>
-    <div class="social-icons">
-        <a href="https://wa.me/9647887603449"><i class="fab fa-whatsapp"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-facebook"></i></a>
+<div style="padding:20px 20px 0;">
+    <span class="small-text">G A L L E R Y</span>
+    <h2 style="font-size: 1rem; margin-top:5px;">أصناف إضافية</h2>
+</div>
+<div class="horizontal-scroll" id="mini-items"></div>
+
+<div id="fire-menu">
+    <div class="fire-gradient"></div>
+    <div style="padding:30px; position: sticky; top:0; background:rgba(0,0,0,0.8); display:flex; justify-content:space-between; align-items:center; z-index:10;">
+        <span class="bronze-text" style="font-weight: 800;">المنيو الناري</span>
+        <i class="fas fa-times" onclick="closeFireMenu()" style="font-size:1.5rem;"></i>
     </div>
-    <div class="copyright">جميع الحقوق محفوظة © 2026 مطعم شط العرب</div>
+    <div id="paper-list" style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; padding:15px;"></div>
+</div>
+
+<div class="cart-bar" id="cart-bar" onclick="closeCartBar()">
+    <div style="display:flex; align-items:center; gap:10px;">
+        <i class="fas fa-shopping-bag"></i>
+        <span style="font-size:0.9rem; font-weight:800;" id="cart-total">0 د.ع</span>
+    </div>
+    <span style="font-size:0.75rem; border:1px solid #000; padding:2px 8px;" onclick="event.stopPropagation(); openCheckout()">تأكيد الطلب</span>
+</div>
+
+<div id="checkout-modal" class="sub-page" style="z-index:9000; background:rgba(0,0,0,0.95);">
+    <div style="background:#111; padding:30px; border-radius:10px; border:1px solid var(--bronze); max-width:400px; margin:auto; margin-top:100px;">
+        <h3 style="margin-bottom:20px;">بيانات التوصيل</h3>
+        <input type="text" id="name" placeholder="الاسم" style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff;">
+        <input type="text" id="addr" placeholder="العنوان" style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff;">
+        <button class="btn-modern" onclick="sendOrder()" style="width:100%; background:var(--bronze); color:#000;">إرسال للواتساب</button>
+        <button onclick="hideSub('checkout-modal')" style="margin-top:10px; background:none; border:none; color:#666;">إلغاء</button>
+    </div>
+</div>
+
+<footer style="padding:60px 20px; text-align:center; border-top:1px solid #111;">
+    <div class="logo" style="margin-bottom:10px;">شط العرب</div>
+    <p class="small-text">نطبخ بكل حب.. لنقدم لك طعم الذكريات الأصيلة</p>
+    <div style="margin:20px 0; display:flex; justify-content:center; gap:20px; font-size:1.2rem;">
+        <i class="fab fa-instagram"></i>
+        <i class="fab fa-facebook-f"></i>
+        <i class="fab fa-whatsapp"></i>
+    </div>
+    <div class="small-text" style="color:#333;">جميع الحقوق محفوظة © 2026 لمطعم شط العرب</div>
 </footer>
 
-<div class="cart-float" id="cart-float" onclick="openCart()">
-    <span>🛒 عرض السلة</span>
-    <span id="cart-total-display">0 د.ع</span>
-</div>
-
-<div class="cart-modal" id="cart-modal">
-    <div class="cart-content">
-        <h3 style="color:var(--gold); text-align:center; margin-bottom:20px;">بيانات التوصيل</h3>
-        <input type="text" id="user-name" class="user-input" placeholder="الاسم">
-        <input type="text" id="user-address" class="user-input" placeholder="العنوان">
-        <input type="tel" id="user-phone" class="user-input" placeholder="رقم الموبايل">
-        <div id="cart-items-list"></div>
-        <div style="margin:20px 0; display:flex; justify-content:space-between; font-weight:bold; border-top:1px solid #333; padding-top:10px;">
-            <span>المجموع:</span>
-            <span id="modal-total">0 د.ع</span>
-        </div>
-        <button onclick="finalSend()" style="background:#25D366; color:white; border:none; width:100%; padding:16px; border-radius:15px; font-weight:bold; font-size:1.1rem;">تأكيد عبر واتساب</button>
-        <button onclick="closeCart()" style="background:transparent; color:#888; border:none; width:100%; margin-top:15px; cursor:pointer;">إلغاء</button>
-    </div>
-</div>
-
 <script>
-// الربط بالشيت
-const sheetID = '1laj-jG9Q18PIEkUivgsTG_iZN4nrbZsAnLu_9ZuMyk0';
-const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+    const sheetID = '1laj-jG9Q18PIEkUivgsTG_iZN4nrbZsAnLu_9ZuMyk0';
+    const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
+    let items = []; let cart = [];
 
-let items = []; let cart = [];
+    fetch(url).then(r => r.text()).then(d => {
+        const json = JSON.parse(d.substring(47, d.length - 2));
+        items = json.table.rows.slice(1).map(r => ({
+            n: r.c[0]?.v || '', cat: r.c[1]?.v || '', p: r.c[2]?.v || 0, im: r.c[3]?.v || ''
+        }));
+        render();
+    });
 
-fetch(url).then(r => r.text()).then(d => {
-    const json = JSON.parse(d.substring(47, d.length - 2));
-    items = json.table.rows.slice(1).map(r => ({
-        n: r.c[0]?.v || '', 
-        cat: String(r.c[1]?.v || 'عام'), 
-        p: r.c[2]?.v || 0, 
-        im: r.c[3]?.v || ''
-    }));
-    show('الكل');
-});
-
-// وظيفة الفلترة المحسنة للربط التلقائي
-function show(cat) {
-    const container = document.getElementById('menu-container');
-    // الفلترة تبحث عن الكلمة داخل الاسم أو الصنف (لربط مندي اللحم بمندي تلقائياً)
-    const filtered = cat === 'الكل' 
-        ? items 
-        : items.filter(i => 
-            i.cat.toLowerCase().includes(cat.toLowerCase()) || 
-            i.n.toLowerCase().includes(cat.toLowerCase())
-        );
-    
-    container.innerHTML = filtered.map(i => `
-        <div class="food-card">
-            <div class="img-container">
-                <img src="${i.im}" onerror="this.src='https://via.placeholder.com/500x350?text=Shatt+Al-Arab'">
+    function render() {
+        const feat = document.getElementById('featured-grid');
+        feat.innerHTML = items.slice(0, 4).map(i => `
+            <div style="background:var(--card-glass); border-radius:4px; overflow:hidden;">
+                <img src="${i.im}" style="width:100%; height:150px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/300x300'">
+                <div style="padding:10px;">
+                    <h3 style="font-size:0.8rem;">${i.n}</h3>
+                    <p class="bronze-text" style="font-size:0.75rem; margin:5px 0;">${i.p} د.ع</p>
+                    <button onclick="addToCart('${i.n}', ${i.p})" style="width:100%; background:var(--bronze); border:none; font-size:0.7rem; padding:5px; color:#000; font-weight:800; cursor:pointer;">إضافة</button>
+                </div>
             </div>
-            <div class="info">
-                <h3>${i.n}</h3>
-                <span class="price">${i.p} د.ع</span>
-                <button class="add-btn" onclick="add('${i.n}', ${i.p})">إضافة للسلة</button>
+        `).join('');
+
+        const mini = document.getElementById('mini-items');
+        mini.innerHTML = items.slice(4, 12).map(i => `
+            <div class="mini-card">
+                <img src="${i.im}" onerror="this.src='https://via.placeholder.com/150x150'">
+                <h4>${i.n}</h4>
+                <p class="bronze-text" style="font-size:0.7rem;">${i.p} د.ع</p>
+                <button onclick="addToCart('${i.n}', ${i.p})" style="background:none; border:1px solid #444; color:#fff; font-size:0.6rem; padding:3px 10px; margin-top:5px; width:100%; cursor:pointer;">+ سلة</button>
             </div>
-        </div>
-    `).join('');
-    document.getElementById('current-cat-title').innerText = cat;
-}
+        `).join('');
 
-function add(n, p) { cart.push({n, p, id: Date.now()}); updateUI(); }
-function removeItem(id) { cart = cart.filter(i => i.id !== id); updateUI(); renderCartList(); }
-function updateUI() {
-    const total = cart.reduce((s, i) => s + i.p, 0);
-    document.getElementById('cart-total-display').innerText = total + " د.ع";
-    document.getElementById('modal-total').innerText = total + " د.ع";
-    document.getElementById('cart-float').style.display = cart.length > 0 ? 'flex' : 'none';
-}
-function renderCartList() {
-    const list = document.getElementById('cart-items-list');
-    list.innerHTML = cart.map(i => `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #222;"><span>${i.n}</span><i class="fas fa-trash-alt" style="color:#ff4d4d; cursor:pointer;" onclick="removeItem(${i.id})"></i></div>`).join('');
-    if(cart.length === 0) closeCart();
-}
-function openCart() { renderCartList(); document.getElementById('cart-modal').style.display = 'block'; }
-function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-function filter(c) { show(c); toggleSidebar(); }
+        const fire = document.getElementById('paper-list');
+        fire.innerHTML = items.map(i => `
+            <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.05); padding:10px; border-radius:2px;">
+                <h4 style="font-size:0.75rem;">${i.n}</h4>
+                <p class="bronze-text" style="font-size:0.7rem;">${i.p} د.ع</p>
+                <button onclick="addToCart('${i.n}', ${i.p})" style="background:var(--bronze); border:none; font-size:0.6rem; padding:4px; margin-top:5px; width:100%; cursor:pointer;">إضافة +</button>
+            </div>
+        `).join('');
+    }
 
-function finalSend() {
-    const name = document.getElementById('user-name').value;
-    const addr = document.getElementById('user-address').value;
-    const phone = document.getElementById('user-phone').value;
-    if(!name || !addr || !phone) { alert("يرجى إكمال جميع الحقول"); return; }
-    let msg = `*طلب جديد - شط العرب*\nالاسم: ${name}\nالعنوان: ${addr}\nالهاتف: ${phone}\n------------------\n`;
-    cart.forEach(i => msg += `• ${i.n}\n`);
-    msg += `------------------\nالمجموع: ${document.getElementById('modal-total').innerText}`;
-    window.open(`https://wa.me/9647887603449?text=${encodeURIComponent(msg)}`);
-}
+    function addToCart(n, p) {
+        cart.push({n, p});
+        const total = cart.reduce((s, i) => s + i.p, 0);
+        document.getElementById('cart-total').innerText = total + " د.ع";
+        document.getElementById('cart-bar').style.display = 'flex';
+    }
+
+    function closeCartBar() { document.getElementById('cart-bar').style.display = 'none'; }
+    function openCheckout() { document.getElementById('checkout-modal').style.display = 'flex'; }
+    function toggleSidePanel() { document.getElementById('side-panel').classList.toggle('active'); }
+    function openFireMenu() { document.getElementById('fire-menu').style.display = 'block'; }
+    function closeFireMenu() { document.getElementById('fire-menu').style.display = 'none'; }
+    function showSub(id) { document.getElementById(id).style.display = 'block'; toggleSidePanel(); }
+    function hideSub(id) { document.getElementById(id).style.display = 'none'; }
+
+    function sendOrder() {
+        const name = document.getElementById('name').value;
+        const addr = document.getElementById('addr').value;
+        if(!name || !addr) return alert("يرجى ملء البيانات");
+        let msg = `*طلب جديد من شط العرب*\nالاسم: ${name}\nالعنوان: ${addr}\n---\n`;
+        cart.forEach(i => msg += `• ${i.n}\n`);
+        msg += `---\nالمجموع: ${document.getElementById('cart-total').innerText}`;
+        window.open(`https://wa.me/9647887603449?text=${encodeURIComponent(msg)}`);
+    }
+
+    function filter(cat) { 
+        openFireMenu(); 
+        toggleSidePanel();
+    }
 </script>
 </body>
 </html>
