@@ -29,29 +29,33 @@
         .btn-modern { padding: 10px 25px; border-radius: 2px; border: 1px solid var(--bronze); background: transparent; color: #fff; cursor: pointer; font-size: 0.8rem; transition: 0.4s; margin: 5px; text-transform: uppercase; }
         .btn-modern:hover { background: var(--bronze); color: #000; }
 
+        /* نافذة المعاينة */
+        #preview-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; display: none; flex-direction: column; align-items: center; padding: 20px; overflow-y: auto; }
+        .preview-content { max-width: 500px; width: 100%; text-align: center; margin-top: 40px; }
+        .preview-img { width: 100%; border-radius: 10px; border: 1px solid var(--bronze); box-shadow: 0 0 30px rgba(142,109,69,0.3); }
+
+        .cart-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: #fff; color: #000; padding: 15px; border-radius: 8px; display: none; flex-direction: column; z-index: 2000; cursor: pointer; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+        .cart-items-container { max-height: 150px; overflow-y: auto; margin-bottom: 10px; display: none; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .cart-item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.85rem; }
+        .remove-btn { color: #d9534f; font-weight: 800; cursor: pointer; padding: 2px 8px; border: 1px solid #d9534f; border-radius: 4px; font-size: 0.7rem; }
+
         .side-panel { position: fixed; top: 0; right: -100%; width: 100%; height: 100%; background: #080808; z-index: 4000; transition: 0.5s cubic-bezier(0.7, 0, 0.3, 1); padding: 40px; display: flex; flex-direction: column; }
         .side-panel.active { right: 0; }
         .panel-link { font-size: 1.5rem; color: #fff; text-decoration: none; margin: 15px 0; font-family: 'Cairo'; font-weight: 300; display: block; }
+
+        #fire-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000; display: none; overflow-y: auto; }
+        .fire-gradient { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 100%, #301400, #000); z-index: -1; }
+
+        .sub-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark-bg); z-index: 6000; display: none; padding: 40px; text-align: center; }
+        .sub-page h2 { margin-top: 50px; color: var(--gold); }
 
         .horizontal-scroll { display: flex; overflow-x: auto; gap: 15px; padding: 20px; scrollbar-width: none; }
         .horizontal-scroll::-webkit-scrollbar { display: none; }
         .mini-card { min-width: 140px; background: var(--card-glass); border-radius: 4px; padding: 10px; border: 1px solid rgba(255,255,255,0.05); }
         .mini-card img { width: 100%; height: 100px; object-fit: cover; border-radius: 2px; margin-bottom: 8px; }
-        .mini-card h4 { font-size: 0.75rem; font-weight: 500; height: 2.2em; overflow: hidden; }
 
-        .cart-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: #fff; color: #000; padding: 15px; border-radius: 8px; display: none; flex-direction: column; z-index: 2000; cursor: pointer; box-shadow: 0 20px 40px rgba(0,0,0,0.4); animation: slideUp 0.5s forwards; }
-        @keyframes slideUp { from { bottom: -100px; } to { bottom: 20px; } }
-        
-        .cart-items-container { max-height: 150px; overflow-y: auto; margin-bottom: 10px; display: none; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
-        .cart-item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 0.85rem; }
-        .remove-btn { color: #d9534f; font-weight: 800; cursor: pointer; padding: 2px 8px; border: 1px solid #d9534f; border-radius: 4px; font-size: 0.7rem; }
-
-        #fire-menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 5000; display: none; overflow-y: auto; }
-        .fire-gradient { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 50% 100%, #301400, #000); z-index: -1; animation: firePulse 4s infinite alternate; }
-        @keyframes firePulse { 0% { opacity: 0.6; } 100% { opacity: 1; } }
-
-        .sub-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--dark-bg); z-index: 6000; display: none; padding: 40px; text-align: center; }
-        .sub-page h2 { margin-top: 50px; color: var(--gold); }
+        /* تأثير الزر عند الطلب */
+        .btn-added { background: #fff !important; color: #000 !important; }
     </style>
 </head>
 <body>
@@ -62,8 +66,13 @@
     <div style="width:20px"></div>
 </div>
 
+<div id="preview-modal">
+    <i class="fas fa-times" onclick="closePreview()" style="position:fixed; top:25px; left:25px; font-size:2rem; color:#fff; cursor:pointer; z-index:11000;"></i>
+    <div class="preview-content" id="preview-body"></div>
+</div>
+
 <div class="side-panel" id="side-panel">
-    <i class="fas fa-times" onclick="toggleSidePanel()" style="position:absolute; top:30px; left:30px; font-size:1.5rem;"></i>
+    <i class="fas fa-times" onclick="toggleSidePanel()" style="position:absolute; top:30px; left:30px; font-size:1.5rem; color:#fff;"></i>
     <div style="margin-top:60px;">
         <a href="javascript:void(0)" onclick="openFireMenu(); toggleSidePanel();" class="panel-link">القائمة كاملة</a>
         <a href="javascript:void(0)" onclick="showSub('why-us')" class="panel-link">لماذا نحن؟</a>
@@ -89,7 +98,7 @@
     <h1 class="hero-title">فن المذاق العراقي</h1>
     <div class="hero-btns">
         <button class="btn-modern" onclick="openFireMenu()">استكشف المنيو</button>
-        <button class="btn-modern" style="border-color:#555;" onclick="window.open('http://google.com/maps')">الموقع</button>
+        <button class="btn-modern" style="border-color:#555;" onclick="window.open('https://maps.google.com/?q=Basra')">الموقع</button>
     </div>
 </section>
 
@@ -109,7 +118,7 @@
     <div class="fire-gradient"></div>
     <div style="padding:30px; position: sticky; top:0; background:rgba(0,0,0,0.9); display:flex; justify-content:space-between; align-items:center; z-index:100; border-bottom: 1px solid var(--bronze);">
         <span class="bronze-text" style="font-weight: 800; font-size: 1.2rem;">قائمة الطعام</span>
-        <i class="fas fa-times" onclick="closeFireMenu()" style="font-size:1.5rem; color: #fff;"></i>
+        <i class="fas fa-times" onclick="closeFireMenu()" style="font-size:1.5rem; color:#fff;"></i>
     </div>
     <div id="paper-list" style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; padding:20px;"></div>
 </div>
@@ -123,7 +132,6 @@
         </div>
         <span style="font-size:0.75rem; border:1px solid #000; padding:2px 8px;" onclick="event.stopPropagation(); openCheckout()">تأكيد الطلب</span>
     </div>
-    <center id="tap-hint" style="font-size: 0.6rem; margin-top: 5px; color: #777;">اضغط لعرض الوجبات أو حذفها</center>
 </div>
 
 <div id="checkout-modal" class="sub-page" style="z-index:9000; background:rgba(0,0,0,0.95);">
@@ -154,72 +162,72 @@
 
     fetch(url).then(r => r.text()).then(d => {
         const json = JSON.parse(d.substring(47, d.length - 2));
-        items = json.table.rows.slice(1).map(r => ({
-            n: r.c[0]?.v || '', cat: r.c[1]?.v || '', p: r.c[2]?.v || 0, im: r.c[3]?.v || ''
+        items = json.table.rows.slice(1).map((r, index) => ({
+            id: index,
+            n: r.c[0]?.v || '', cat: r.c[1]?.v || '', p: r.c[2]?.v || 0, im: r.c[3]?.v || '',
+            desc: r.c[4]?.v || 'وجبة شهية محضرة من أجود المكونات الطازجة على الطريقة العراقية الأصيلة.'
         }));
         render();
     });
 
     function render() {
-        // 1. العروض المميزة (أول 4 أصناف)
-        const feat = document.getElementById('featured-grid');
-        feat.innerHTML = items.slice(0, 4).map(i => createCardHTML(i)).join('');
-
-        // 2. الأصناف الإضافية (أصناف أخرى)
-        const mini = document.getElementById('mini-items');
-        mini.innerHTML = items.slice(4, 12).map(i => `
+        document.getElementById('featured-grid').innerHTML = items.slice(0, 4).map(i => createCardHTML(i)).join('');
+        document.getElementById('mini-items').innerHTML = items.slice(4, 12).map(i => `
             <div class="mini-card">
-                <img src="${i.im}" onerror="this.src='https://via.placeholder.com/150x150'">
-                <h4>${i.n}</h4>
+                <img src="${i.im}" onclick="openPreview(${i.id})" onerror="this.src='https://via.placeholder.com/150x150'">
+                <h4 style="font-size:0.75rem;">${i.n}</h4>
                 <p class="bronze-text" style="font-size:0.7rem;">${i.p} د.ع</p>
-                <button onclick="addToCart('${i.n}', ${i.p})" style="background:none; border:1px solid #444; color:#fff; font-size:0.6rem; padding:3px 10px; margin-top:5px; width:100%; cursor:pointer;">+ سلة</button>
+                <button onclick="addToCart(this, '${i.n}', ${i.p})" style="background:none; border:1px solid #444; color:#fff; font-size:0.6rem; padding:3px 10px; margin-top:5px; width:100%; cursor:pointer;">+ سلة</button>
             </div>
         `).join('');
-
-        // 3. المنيو الناري الكامل (كل المنتجات بالصور)
-        const fire = document.getElementById('paper-list');
-        fire.innerHTML = items.map(i => createCardHTML(i)).join('');
+        document.getElementById('paper-list').innerHTML = items.map(i => createCardHTML(i)).join('');
     }
 
-    // دالة مساعدة لإنشاء كرت المنتج بالصورة
     function createCardHTML(i) {
         return `
             <div style="background:var(--card-glass); border-radius:4px; overflow:hidden; border: 1px solid rgba(255,255,255,0.05);">
-                <img src="${i.im}" style="width:100%; height:130px; object-fit:cover;" onerror="this.src='https://via.placeholder.com/300x300'">
+                <img src="${i.im}" onclick="openPreview(${i.id})" style="width:100%; height:130px; object-fit:cover; cursor:pointer;" onerror="this.src='https://via.placeholder.com/300x300'">
                 <div style="padding:10px;">
-                    <h3 style="font-size:0.8rem; height: 2.4em; overflow: hidden;">${i.n}</h3>
+                    <h3 onclick="openPreview(${i.id})" style="font-size:0.8rem; height: 2.4em; overflow: hidden; cursor:pointer;">${i.n}</h3>
                     <p class="bronze-text" style="font-size:0.75rem; margin:5px 0;">${i.p} د.ع</p>
-                    <button onclick="addToCart('${i.n}', ${i.p})" style="width:100%; background:var(--bronze); border:none; font-size:0.7rem; padding:6px; color:#000; font-weight:800; cursor:pointer; border-radius:2px;">إضافة</button>
+                    <button onclick="addToCart(this, '${i.n}', ${i.p})" style="width:100%; background:var(--bronze); border:none; font-size:0.7rem; padding:6px; color:#000; font-weight:800; cursor:pointer; border-radius:2px; transition:0.3s;">إضافة</button>
                 </div>
             </div>
         `;
     }
 
-    function addToCart(n, p) {
-        cart.push({n, p});
-        updateCartUI();
+    function openPreview(id) {
+        const item = items.find(i => i.id === id);
+        const modal = document.getElementById('preview-modal');
+        document.getElementById('preview-body').innerHTML = `
+            <img src="${item.im}" class="preview-img">
+            <h2 style="margin: 20px 0; color:var(--gold);">${item.n}</h2>
+            <p class="bronze-text" style="font-size: 1.2rem;">${item.p} د.ع</p>
+            <p style="color: #ccc; margin: 15px 0 25px; font-weight: 300;">${item.desc}</p>
+            <button class="btn-modern" onclick="addToCart(null, '${item.n}', ${item.p}); closePreview();" style="background:var(--bronze); color:#000; width:80%; font-weight:800;">إضافة للسلة</button>
+        `;
+        modal.style.display = 'flex';
     }
 
-    function removeFromCart(index) {
-        cart.splice(index, 1);
+    function closePreview() { document.getElementById('preview-modal').style.display = 'none'; }
+
+    function addToCart(btn, n, p) {
+        cart.push({n, p});
         updateCartUI();
+        if(btn) {
+            const originalText = btn.innerText;
+            btn.innerText = "تم!";
+            btn.classList.add('btn-added');
+            setTimeout(() => { btn.innerText = originalText; btn.classList.remove('btn-added'); }, 1000);
+        }
     }
 
     function updateCartUI() {
         const cartBar = document.getElementById('cart-bar');
         const listContainer = document.getElementById('cart-items-list');
-        const totalText = document.getElementById('cart-total');
-
-        if(cart.length === 0) {
-            cartBar.style.display = 'none';
-            listContainer.style.display = 'none';
-            return;
-        }
-
+        if(cart.length === 0) { cartBar.style.display = 'none'; return; }
         cartBar.style.display = 'flex';
-        const total = cart.reduce((s, i) => s + i.p, 0);
-        totalText.innerText = total + " د.ع";
-
+        document.getElementById('cart-total').innerText = cart.reduce((s, i) => s + i.p, 0) + " د.ع";
         listContainer.innerHTML = cart.map((item, index) => `
             <div class="cart-item-row">
                 <span>${item.n}</span>
@@ -231,33 +239,22 @@
         `).join('');
     }
 
-    function toggleCartList() {
-        const list = document.getElementById('cart-items-list');
-        list.style.display = (list.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function openCheckout() { document.getElementById('checkout-modal').style.display = 'flex'; }
-    function toggleSidePanel() { document.getElementById('side-panel').classList.toggle('active'); }
+    function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
+    function toggleCartList() { const l = document.getElementById('cart-items-list'); l.style.display = l.style.display === 'block' ? 'none' : 'block'; }
     function openFireMenu() { document.getElementById('fire-menu').style.display = 'block'; }
     function closeFireMenu() { document.getElementById('fire-menu').style.display = 'none'; }
+    function toggleSidePanel() { document.getElementById('side-panel').classList.toggle('active'); }
     function showSub(id) { document.getElementById(id).style.display = 'block'; if(id !== 'checkout-modal') toggleSidePanel(); }
     function hideSub(id) { document.getElementById(id).style.display = 'none'; }
-
+    function openCheckout() { document.getElementById('checkout-modal').style.display = 'flex'; }
     function sendOrder() {
-        const name = document.getElementById('name').value;
-        const addr = document.getElementById('addr').value;
-        if(!name || !addr) return alert("يرجى ملء البيانات");
-        let msg = `*طلب جديد من شط العرب*\nالاسم: ${name}\nالعنوان: ${addr}\n---\n`;
-        cart.forEach(i => msg += `• ${i.n} (${i.p} د.ع)\n`);
-        msg += `---\nالمجموع: ${document.getElementById('cart-total').innerText}`;
-        window.open(`https://wa.me/9647887603449?text=${encodeURIComponent(msg)}`);
-    }
-
-    function filter(cat) { 
-        openFireMenu(); 
-        toggleSidePanel();
+        const n = document.getElementById('name').value; const a = document.getElementById('addr').value;
+        if(!n || !a) return alert("يرجى ملء البيانات");
+        let m = `*طلب جديد من شط العرب*\nالاسم: ${n}\nالعنوان: ${a}\n---\n`;
+        cart.forEach(i => m += `• ${i.n} (${i.p} د.ع)\n`);
+        m += `---\nالمجموع: ${document.getElementById('cart-total').innerText}`;
+        window.open(`https://wa.me/9647887603449?text=${encodeURIComponent(m)}`);
     }
 </script>
 </body>
 </html>
-
