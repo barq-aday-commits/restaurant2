@@ -3,148 +3,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>مطعم شط العرب | نظام الطلبات الذكي</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
+    <title>شط العرب | تجربة طعام فريدة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --rust: #b7410e; --bronze: #cd7f32; --dark: #1a1a1a; --silver: #f4f4f4; }
+        :root { --gold: #cd7f32; --dark: #121212; --rust: #b7410e; --white: #ffffff; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
-        body { background-color: var(--silver); padding-bottom: 100px; }
+        body { background-color: #f9f9f9; color: var(--dark); overflow-x: hidden; }
 
-        header { background: var(--dark); color: white; text-align: center; padding: 20px; border-bottom: 3px solid var(--bronze); }
-        
-        .menu-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 20px; }
-        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
-        .card img { width: 100%; height: 120px; object-fit: cover; }
-        .card-body { padding: 10px; }
-        .price { color: var(--rust); font-weight: bold; display: block; margin: 5px 0; }
-        
-        .add-btn { background: var(--rust); color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; }
-
-        /* سلة الطلبات العائمة */
-        .cart-bar {
-            position: fixed; bottom: 0; left: 0; width: 100%; background: white;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.1); padding: 15px; display: flex;
-            justify-content: space-between; align-items: center; z-index: 1000;
+        /* الصفحة الترويجية الكاملة */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1541529086526-db283c563270?w=1000');
+            background-size: cover; background-position: center;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; color: white; padding: 20px;
         }
-        .order-now-btn { background: #25D366; color: white; padding: 12px 25px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
-
-        /* نافذة بيانات الزبون */
-        #checkout-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8); display: none; z-index: 2000; justify-content: center; align-items: center;
+        .hero h1 { font-size: 3.5rem; font-weight: 900; color: var(--gold); margin-bottom: 10px; }
+        .hero p { font-size: 1.2rem; margin-bottom: 30px; max-width: 600px; }
+        .hero-btn { 
+            background: var(--gold); color: white; padding: 15px 40px; 
+            border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.1rem;
+            transition: 0.3s; border: 2px solid var(--gold);
         }
-        .form-box { background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; }
-        .form-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
-        .final-btn { background: #25D366; color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .hero-btn:hover { background: transparent; }
+
+        /* المنيو وقوالب الأكلات 30x30 تقريباً */
+        .section-title { text-align: center; padding: 50px 20px 20px; font-size: 2rem; color: var(--rust); }
+        .menu-grid {
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* قوالب صغيرة ومرتبة */
+            gap: 15px; padding: 20px; max-width: 1200px; margin: 0 auto;
+        }
+        .food-card {
+            background: white; border-radius: 15px; overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); transition: 0.3s;
+            display: flex; flex-direction: column; border: 1px solid #eee;
+        }
+        .food-card img { width: 100%; height: 150px; object-fit: cover; }
+        .food-info { padding: 10px; text-align: center; flex-grow: 1; }
+        .food-info h3 { font-size: 0.9rem; margin-bottom: 5px; }
+        .food-price { color: var(--rust); font-weight: 800; font-size: 1rem; margin-bottom: 10px; display: block; }
+        
+        .add-to-cart {
+            background: var(--dark); color: var(--gold); border: 1px solid var(--gold);
+            padding: 8px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.8rem;
+        }
+        .add-to-cart:hover { background: var(--gold); color: white; }
+
+        /* سلة الطلبات */
+        .cart-float {
+            position: fixed; bottom: 20px; right: 20px; left: 20px;
+            background: var(--dark); color: white; padding: 15px 25px;
+            border-radius: 50px; display: none; justify-content: space-between;
+            align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 1000;
+        }
+        .order-btn { background: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 25px; font-weight: bold; cursor: pointer; }
+
+        /* نافذة البيانات */
+        .modal {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.9); display: none; z-index: 2000;
+            justify-content: center; align-items: center;
+        }
+        .modal-content { background: white; padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; }
+        .modal-content input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 2.5rem; }
+            .menu-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; }
+        }
     </style>
 </head>
 <body>
 
-<header><h1>شط العرب</h1></header>
+<section class="hero">
+    <h1>شط العرب</h1>
+    <p>نكهة عراقية أصيلة تأخذك لضفاف دجلة والفرات. اطلب الآن واستمتع بأشهى المشاوي والوجبات.</p>
+    <a href="#menu" class="hero-btn">استعرض القائمة</a>
+</section>
 
-<div class="menu-container" id="food-list">
+<section id="menu">
+    <h2 class="section-title">قائمة الطعام</h2>
+    <div class="menu-grid" id="food-list">
+        <p style="grid-column: 1/-1; text-align: center;">تحميل النكهات...</p>
     </div>
+</section>
 
-<div class="cart-bar" id="cart-bar" style="display: none;">
+<div class="cart-float" id="cart-bar">
     <div>
-        <span id="cart-count">0</span> وجبات | 
-        <span id="cart-total" style="color: var(--rust); font-weight: bold;">0</span> د.ع
+        <span id="items-count">0</span> وجبات | 
+        <span id="total-price" style="color: var(--gold);">0</span> د.ع
     </div>
-    <button class="order-now-btn" onclick="openCheckout()">اطلب الآن</button>
+    <button class="order-btn" onclick="showForm()">اطلب الآن</button>
 </div>
 
-<div id="checkout-modal">
-    <div class="form-box">
-        <h3>تأكيد الطلب</h3>
-        <div id="cart-summary" style="font-size: 0.8rem; color: #666; margin: 10px 0;"></div>
-        <input type="text" id="cust-name" placeholder="الاسم الكامل">
-        <input type="tel" id="cust-phone" placeholder="رقم الهاتف">
-        <input type="text" id="cust-address" placeholder="العنوان">
-        <button class="final-btn" onclick="sendToWhatsapp()">إرسال للواتساب</button>
-        <button onclick="closeCheckout()" style="background:none; border:none; color:grey; width:100%; margin-top:10px;">إلغاء</button>
+<div class="modal" id="order-modal">
+    <div class="modal-content">
+        <h3 style="text-align: center; margin-bottom: 15px;">بيانات التوصيل</h3>
+        <input type="text" id="user-name" placeholder="اسمك الكامل">
+        <input type="tel" id="user-phone" placeholder="رقم الموبايل">
+        <input type="text" id="user-addr" placeholder="العنوان بالتفصيل">
+        <button class="order-btn" style="width: 100%; padding: 15px;" onclick="sendOrder()">تأكيد وإرسال عبر واتساب</button>
+        <button onclick="hideForm()" style="background:none; border:none; width:100%; margin-top:10px; color:grey;">رجوع</button>
     </div>
 </div>
 
 <script>
 const _k = '1laj-jG9Q18PIEkUivgsTG_iZN4nrbZsAnLu_9ZuMyk0'; // آيدي الشيت
 const _u = `https://docs.google.com/spreadsheets/d/${_k}/gviz/tq?tqx=out:json`;
-const phoneNum = "9647887603449"; // رقم الواتساب المطلوب
+const targetPhone = "9647887603449"; // رقمك للتجربة
 
 let cart = [];
 
-// تحميل المنيو
-fetch(_u).then(r => r.text()).then(d => {
-    const j = JSON.parse(d.substring(47, d.length - 2));
-    const rows = j.table.rows;
-    const list = document.getElementById('food-list');
-    list.innerHTML = '';
+// جلب البيانات من غوغل شيت
+fetch(_u).then(res => res.text()).then(data => {
+    const json = JSON.parse(data.substring(47, data.length - 2));
+    const rows = json.table.rows;
+    const container = document.getElementById('food-list');
+    container.innerHTML = '';
 
     for (let i = 1; i < rows.length; i++) {
         const c = rows[i].c;
-        const dish = {
-            n: c[0] ? c[0].v : '',
-            p: c[2] ? parseFloat(c[2].v) : 0,
-            im: c[3] ? c[3].v : ''
+        const item = {
+            name: c[0] ? c[0].v : '',
+            price: c[2] ? parseFloat(c[2].v) : 0,
+            img: c[3] ? c[3].v : ''
         };
 
-        if(dish.n) {
-            list.innerHTML += `
-                <div class="card">
-                    <img src="${dish.im}">
-                    <div class="card-body">
-                        <h3>${dish.n}</h3>
-                        <span class="price">${dish.p} د.ع</span>
-                        <button class="add-btn" onclick="addToCart('${dish.n}', ${dish.p})">+ إضافة للسلة</button>
+        if(item.name) {
+            container.innerHTML += `
+                <div class="food-card">
+                    <img src="${item.img}" alt="${item.name}">
+                    <div class="food-info">
+                        <h3>${item.name}</h3>
+                        <span class="food-price">${item.price} د.ع</span>
+                        <button class="add-to-cart" onclick="addToCart('${item.name}', ${item.price})">+ إضافة</button>
                     </div>
                 </div>`;
         }
     }
 });
 
-function addToCart(name, price) {
-    cart.push({ name, price });
-    updateCartBar();
+function addToCart(n, p) {
+    cart.push({ n, p });
+    updateUI();
 }
 
-function updateCartBar() {
-    const bar = document.getElementById('cart-bar');
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    document.getElementById('cart-count').innerText = cart.length;
-    document.getElementById('cart-total').innerText = total;
-    bar.style.display = cart.length > 0 ? 'flex' : 'none';
+function updateUI() {
+    const total = cart.reduce((s, i) => s + i.p, 0);
+    document.getElementById('items-count').innerText = cart.length;
+    document.getElementById('total-price').innerText = total;
+    document.getElementById('cart-bar').style.display = cart.length > 0 ? 'flex' : 'none';
 }
 
-function openCheckout() {
-    let summary = cart.map(item => item.name).join(" + ");
-    document.getElementById('cart-summary').innerText = "طلباتك: " + summary;
-    document.getElementById('checkout-modal').style.display = 'flex';
-}
+function showForm() { document.getElementById('order-modal').style.display = 'flex'; }
+function hideForm() { document.getElementById('order-modal').style.display = 'none'; }
 
-function closeCheckout() { document.getElementById('checkout-modal').style.display = 'none'; }
+function sendOrder() {
+    const name = document.getElementById('user-name').value;
+    const phone = document.getElementById('user-phone').value;
+    const addr = document.getElementById('user-addr').value;
+    const total = cart.reduce((s, i) => s + i.p, 0);
 
-function sendToWhatsapp() {
-    const name = document.getElementById('cust-name').value;
-    const phone = document.getElementById('cust-phone').value;
-    const addr = document.getElementById('cust-address').value;
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    if(!name || !phone || !addr) { alert("لطفاً، أكمل البيانات لإتمام الطلب"); return; }
 
-    if(!name || !phone || !addr) { alert("أكمل البيانات أولاً"); return; }
+    let itemsStr = cart.map(i => `- ${i.n} (${i.p} د.ع)`).join("\n");
+    const message = `*طلب جديد من الموقع* 🛒\n\n` +
+                    `*الأصناف:*\n${itemsStr}\n` +
+                    `-------------------\n` +
+                    `*المجموع:* ${total} د.ع\n\n` +
+                    `*الزبون:* ${name}\n` +
+                    `*رقم الهاتف:* ${phone}\n` +
+                    `*العنوان:* ${addr}`;
 
-    let itemsText = cart.map(item => `- ${item.name} (${item.price} د.ع)`).join("\n");
-    
-    const msg = `*طلب جديد من الموقع* 🛒\n\n` +
-                `*الأصناف:*\n${itemsText}\n` +
-                `-------------------\n` +
-                `*المجموع الكلي:* ${total} د.ع\n\n` +
-                `*الاسم:* ${name}\n` +
-                `*الهاتف:* ${phone}\n` +
-                `*العنوان:* ${addr}`;
-
-    window.open(`https://wa.me/${phoneNum}?text=${encodeURIComponent(msg)}`);
-    cart = []; // تفريغ السلة بعد الطلب
-    updateCartBar();
-    closeCheckout();
+    window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`);
+    cart = []; updateUI(); hideForm();
 }
 </script>
+
 </body>
 </html>
