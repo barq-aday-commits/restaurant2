@@ -3,116 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>مطعم شط العرب | المنيو الإلكتروني</title>
-    
-    <meta name="description" content="منيو مطعم شط العرب في العراق - اطلب الآن أشهى المأكولات">
-    <meta name="keywords" content="مطعم, العراق, اكل, منيو, توصيل, شط العرب">
-
+    <title>مطعم شط العرب | نظام الطلبات الذكي</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        :root { --rust: #b7410e; --bronze: #cd7f32; --dark: #1a1a1a; --silver: #f8f9fa; }
+        :root { --rust: #b7410e; --bronze: #cd7f32; --dark: #1a1a1a; --silver: #f4f4f4; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
-        body { background-color: var(--silver); }
+        body { background-color: var(--silver); padding-bottom: 100px; }
 
-        /* الهيدر */
-        header { 
-            background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1541529086526-db283c563270?w=800');
-            background-size: cover; height: 250px; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; color: white; border-bottom: 5px solid var(--bronze);
-        }
-
-        /* شبكة المنيو */
-        .menu-container {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 15px; padding: 20px; max-width: 1100px; margin: 0 auto;
-        }
-        .card { background: white; border-radius: 12px; overflow: hidden; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; }
-        .card:hover { transform: scale(1.03); }
-        .card img { width: 100%; height: 140px; object-fit: cover; }
-        .card-info { padding: 10px; text-align: center; }
-        .card-info h3 { font-size: 0.9rem; margin-bottom: 5px; }
-        .price-tag { color: var(--rust); font-weight: bold; }
-
-        /* صفحة تفاصيل الأكلة (تظهر فوق الموقع) */
-        #product-page {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: white; z-index: 1000; display: none; overflow-y: auto;
-        }
-        .product-content { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .product-img { width: 100%; height: 300px; border-radius: 20px; object-fit: cover; }
-        .details-box { padding: 20px 0; }
-        .btn-order-now { 
-            background: var(--rust); color: white; width: 100%; padding: 15px; 
-            border: none; border-radius: 10px; font-size: 1.2rem; font-weight: bold; cursor: pointer;
-        }
-
-        /* صفحة الفورم النهائية */
-        #order-page { display: none; padding: 20px; max-width: 500px; margin: 0 auto; text-align: right; }
-        .input-group { margin-bottom: 15px; }
-        .input-group label { display: block; margin-bottom: 5px; font-weight: bold; }
-        .input-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; }
+        header { background: var(--dark); color: white; text-align: center; padding: 20px; border-bottom: 3px solid var(--bronze); }
         
-        .whatsapp-final { background: #25D366; color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 1.1rem; cursor: pointer; }
-        .back-btn { background: none; border: none; color: var(--bronze); cursor: pointer; margin-bottom: 20px; font-weight: bold; }
+        .menu-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; padding: 20px; }
+        .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; }
+        .card img { width: 100%; height: 120px; object-fit: cover; }
+        .card-body { padding: 10px; }
+        .price { color: var(--rust); font-weight: bold; display: block; margin: 5px 0; }
+        
+        .add-btn { background: var(--rust); color: white; border: none; padding: 8px; border-radius: 5px; cursor: pointer; width: 100%; font-weight: bold; }
+
+        /* سلة الطلبات العائمة */
+        .cart-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%; background: white;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.1); padding: 15px; display: flex;
+            justify-content: space-between; align-items: center; z-index: 1000;
+        }
+        .order-now-btn { background: #25D366; color: white; padding: 12px 25px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; }
+
+        /* نافذة بيانات الزبون */
+        #checkout-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); display: none; z-index: 2000; justify-content: center; align-items: center;
+        }
+        .form-box { background: white; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; }
+        .form-box input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
+        .final-btn { background: #25D366; color: white; width: 100%; padding: 15px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div id="main-page">
-    <header>
-        <h1>شط العرب</h1>
-        <p>نكهة الرافدين الأصلية</p>
-    </header>
-    <h2 style="text-align: center; margin: 30px 0;">قائمة الطعام</h2>
-    <div class="menu-container" id="food-list">
-        <p style="text-align: center; grid-column: 1/-1;">جاري تجهيز المائدة...</p>
+<header><h1>شط العرب</h1></header>
+
+<div class="menu-container" id="food-list">
     </div>
+
+<div class="cart-bar" id="cart-bar" style="display: none;">
+    <div>
+        <span id="cart-count">0</span> وجبات | 
+        <span id="cart-total" style="color: var(--rust); font-weight: bold;">0</span> د.ع
+    </div>
+    <button class="order-now-btn" onclick="openCheckout()">اطلب الآن</button>
 </div>
 
-<div id="product-page">
-    <div class="product-content">
-        <button class="back-btn" onclick="closeProduct()"> < العودة للمنيو</button>
-        <img id="p-img" class="product-img" src="" alt="">
-        <div class="details-box">
-            <h1 id="p-title"></h1>
-            <p id="p-desc" style="color: #666; margin: 15px 0;"></p>
-            <h2 id="p-price" style="color: var(--rust); margin-bottom: 20px;"></h2>
-            <button class="btn-order-now" onclick="goToOrderForm()">اطلب الآن</button>
-        </div>
+<div id="checkout-modal">
+    <div class="form-box">
+        <h3>تأكيد الطلب</h3>
+        <div id="cart-summary" style="font-size: 0.8rem; color: #666; margin: 10px 0;"></div>
+        <input type="text" id="cust-name" placeholder="الاسم الكامل">
+        <input type="tel" id="cust-phone" placeholder="رقم الهاتف">
+        <input type="text" id="cust-address" placeholder="العنوان">
+        <button class="final-btn" onclick="sendToWhatsapp()">إرسال للواتساب</button>
+        <button onclick="closeCheckout()" style="background:none; border:none; color:grey; width:100%; margin-top:10px;">إلغاء</button>
     </div>
-</div>
-
-<div id="order-page">
-    <button class="back-btn" onclick="backToProduct()"> < تعديل الطلب</button>
-    <h2 style="margin-bottom: 20px;">بيانات التوصيل</h2>
-    <p id="order-summary" style="background: #eee; padding: 10px; border-radius: 5px; margin-bottom: 20px;"></p>
-    
-    <div class="input-group">
-        <label>الاسم الكامل</label>
-        <input type="text" id="cust-name" placeholder="اكتب اسمك هنا">
-    </div>
-    <div class="input-group">
-        <label>رقم الهاتف</label>
-        <input type="tel" id="cust-phone" placeholder="07XXXXXXXX">
-    </div>
-    <div class="input-group">
-        <label>العنوان بالتفصيل</label>
-        <input type="text" id="cust-address" placeholder="المحافظة - المنطقة - الشارع">
-    </div>
-    
-    <button class="whatsapp-final" onclick="sendToWhatsapp()">
-        إرسال الطلب عبر واتساب (07887603449)
-    </button>
 </div>
 
 <script>
-const _k = '1laj-jG9Q18PIEkUivgsTG_iZN4nrbZsAnLu_9ZuMyk0';
+const _k = '1laj-jG9Q18PIEkUivgsTG_iZN4nrbZsAnLu_9ZuMyk0'; // آيدي الشيت
 const _u = `https://docs.google.com/spreadsheets/d/${_k}/gviz/tq?tqx=out:json`;
-const phoneNum = "9647887603449"; // رقمك الذي طلبته
+const phoneNum = "9647887603449"; // رقم الواتساب المطلوب
 
-let currentDish = {};
+let cart = [];
 
-// 1. تحميل البيانات
+// تحميل المنيو
 fetch(_u).then(r => r.text()).then(d => {
     const j = JSON.parse(d.substring(47, d.length - 2));
     const rows = j.table.rows;
@@ -122,76 +82,69 @@ fetch(_u).then(r => r.text()).then(d => {
     for (let i = 1; i < rows.length; i++) {
         const c = rows[i].c;
         const dish = {
-            name: c[0] ? c[0].v : '',
-            desc: c[1] ? c[1].v : '',
-            price: c[2] ? c[2].v : '',
-            img: c[3] ? c[3].v : ''
+            n: c[0] ? c[0].v : '',
+            p: c[2] ? parseFloat(c[2].v) : 0,
+            im: c[3] ? c[3].v : ''
         };
 
-        if(dish.name) {
+        if(dish.n) {
             list.innerHTML += `
-                <div class="card" onclick="showProduct('${dish.name}', '${dish.desc}', '${dish.price}', '${dish.img}')">
-                    <img src="${dish.img}" alt="${dish.name}">
-                    <div class="card-info">
-                        <h3>${dish.name}</h3>
-                        <span class="price-tag">${dish.price} د.ع</span>
+                <div class="card">
+                    <img src="${dish.im}">
+                    <div class="card-body">
+                        <h3>${dish.n}</h3>
+                        <span class="price">${dish.p} د.ع</span>
+                        <button class="add-btn" onclick="addToCart('${dish.n}', ${dish.p})">+ إضافة للسلة</button>
                     </div>
                 </div>`;
         }
     }
 });
 
-// 2. وظائف الانتقال
-function showProduct(n, d, p, i) {
-    currentDish = { n, d, p };
-    document.getElementById('p-title').innerText = n;
-    document.getElementById('p-desc').innerText = d;
-    document.getElementById('p-price').innerText = p + " د.ع";
-    document.getElementById('p-img').src = i;
-    
-    document.getElementById('main-page').style.display = 'none';
-    document.getElementById('product-page').style.display = 'block';
-    window.scrollTo(0,0);
+function addToCart(name, price) {
+    cart.push({ name, price });
+    updateCartBar();
 }
 
-function closeProduct() {
-    document.getElementById('product-page').style.display = 'none';
-    document.getElementById('main-page').style.display = 'block';
+function updateCartBar() {
+    const bar = document.getElementById('cart-bar');
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
+    document.getElementById('cart-count').innerText = cart.length;
+    document.getElementById('cart-total').innerText = total;
+    bar.style.display = cart.length > 0 ? 'flex' : 'none';
 }
 
-function goToOrderForm() {
-    document.getElementById('order-summary').innerText = "الوجبة المختارة: " + currentDish.n;
-    document.getElementById('product-page').style.display = 'none';
-    document.getElementById('order-page').style.display = 'block';
+function openCheckout() {
+    let summary = cart.map(item => item.name).join(" + ");
+    document.getElementById('cart-summary').innerText = "طلباتك: " + summary;
+    document.getElementById('checkout-modal').style.display = 'flex';
 }
 
-function backToProduct() {
-    document.getElementById('order-page').style.display = 'none';
-    document.getElementById('product-page').style.display = 'block';
-}
+function closeCheckout() { document.getElementById('checkout-modal').style.display = 'none'; }
 
-// 3. الإرسال النهائي
 function sendToWhatsapp() {
     const name = document.getElementById('cust-name').value;
     const phone = document.getElementById('cust-phone').value;
     const addr = document.getElementById('cust-address').value;
+    const total = cart.reduce((sum, item) => sum + item.price, 0);
 
-    if(!name || !phone || !addr) {
-        alert("لطفاً، أكمل بياناتك لنتمكن من توصيل الطلب.");
-        return;
-    }
+    if(!name || !phone || !addr) { alert("أكمل البيانات أولاً"); return; }
 
-    const msg = `*طلب جديد من الموقع* \n\n` +
-                `*الوجبة:* ${currentDish.n}\n` +
-                `*السعر:* ${currentDish.p} د.ع\n` +
+    let itemsText = cart.map(item => `- ${item.name} (${item.price} د.ع)`).join("\n");
+    
+    const msg = `*طلب جديد من الموقع* 🛒\n\n` +
+                `*الأصناف:*\n${itemsText}\n` +
                 `-------------------\n` +
-                `*اسم الزبون:* ${name}\n` +
-                `*رقم الهاتف:* ${phone}\n` +
+                `*المجموع الكلي:* ${total} د.ع\n\n` +
+                `*الاسم:* ${name}\n` +
+                `*الهاتف:* ${phone}\n` +
                 `*العنوان:* ${addr}`;
 
     window.open(`https://wa.me/${phoneNum}?text=${encodeURIComponent(msg)}`);
+    cart = []; // تفريغ السلة بعد الطلب
+    updateCartBar();
+    closeCheckout();
 }
 </script>
-
 </body>
 </html>
