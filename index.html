@@ -7,105 +7,73 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        :root { --gold: #cd7f32; --dark: #0a0a0a; --rust: #b7410e; }
+        :root { --gold: #cd7f32; --dark: #0a0a0a; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Tajawal', sans-serif; }
-        
-        body { 
-            background: #0f0f0f; color: white; scroll-behavior: smooth;
-        }
+        body { background: #0f0f0f; color: white; scroll-behavior: smooth; }
 
-        /* القائمة الجانبية الكبرى */
-        .sidebar {
-            position: fixed; top: 0; right: -300px; width: 300px; height: 100%;
-            background: #111; z-index: 3000; transition: 0.5s; overflow-y: auto;
-            border-left: 2px solid var(--gold); padding: 25px;
-        }
+        .top-nav { position: fixed; top: 0; width: 100%; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(0,0,0,0.6); transition: 0.3s; }
+        .sidebar { position: fixed; top: 0; right: -300px; width: 300px; height: 100%; background: #111; z-index: 3000; transition: 0.5s; overflow-y: auto; border-left: 2px solid var(--gold); padding: 25px; }
         .sidebar.active { right: 0; }
         .sidebar h2 { color: var(--gold); margin-bottom: 25px; text-align: center; border-bottom: 1px solid var(--gold); padding-bottom: 10px; }
-        .cat-item { 
-            display: block; color: #ccc; text-decoration: none; padding: 15px;
-            border-bottom: 1px solid #222; cursor: pointer; transition: 0.3s;
-        }
-        .cat-item:hover { background: var(--gold); color: black; border-radius: 8px; }
+        .cat-item { display: block; color: #ccc; text-decoration: none; padding: 15px; border-bottom: 1px solid #222; cursor: pointer; }
+        .cat-item:hover { color: var(--gold); background: #1a1a1a; }
 
-        /* الهيدر والترحيب */
         .hero {
-            height: 80vh;
+            height: 90vh;
             background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1541529086526-db283c563270?w=1000');
             background-size: cover; background-position: center;
             display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 20px;
         }
         .hero h1 { font-size: 3.5rem; color: var(--gold); margin-bottom: 10px; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
         .hero p { font-size: 1.2rem; max-width: 600px; color: #ddd; margin-bottom: 30px; }
-        .hero-btn { 
-            background: var(--gold); color: black; padding: 12px 40px; 
-            border-radius: 50px; text-decoration: none; font-weight: 900;
-        }
+        
+        .hero-btns { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .hero-btn { background: var(--gold); color: black; padding: 12px 30px; border-radius: 50px; text-decoration: none; font-weight: 900; min-width: 160px; }
+        .loc-btn { background: transparent; color: var(--gold); border: 2px solid var(--gold); padding: 10px 30px; border-radius: 50px; text-decoration: none; font-weight: 900; min-width: 160px; }
 
-        /* شريط علوي بسيط */
-        .top-nav {
-            position: fixed; top: 0; width: 100%; padding: 15px 25px;
-            display: flex; justify-content: space-between; align-items: center;
-            z-index: 1000; transition: 0.3s; background: rgba(0,0,0,0.5);
-        }
-
-        /* شبكة الأكلات */
         .section-title { text-align: center; padding: 50px 0 20px; color: var(--gold); font-size: 2rem; }
-        .menu-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
-            gap: 15px; padding: 20px; max-width: 1200px; margin: 0 auto;
-        }
-        .food-card {
-            background: #1a1a1a; border-radius: 20px; overflow: hidden;
-            border: 1px solid #333; transition: 0.3s;
-        }
+        .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(165px, 1fr)); gap: 15px; padding: 20px; max-width: 1200px; margin: 0 auto; }
+        .food-card { background: #1a1a1a; border-radius: 20px; overflow: hidden; border: 1px solid #333; transition: 0.3s; }
         .food-card img { width: 100%; height: 140px; object-fit: cover; }
         .info { padding: 12px; text-align: center; }
         .price { color: var(--gold); font-weight: 900; font-size: 1.1rem; display: block; margin-bottom: 10px; }
-        .add-btn {
-            background: transparent; color: var(--gold); border: 1px solid var(--gold);
-            padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer;
-        }
-        .add-btn:hover { background: var(--gold); color: black; }
+        .add-btn { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 8px; border-radius: 10px; width: 100%; font-weight: bold; cursor: pointer; }
 
-        /* أسفل الصفحة - Footer */
-        footer {
-            background: #0a0a0a; padding: 60px 20px 20px; text-align: center;
-            border-top: 1px solid #222; margin-top: 50px;
-        }
+        .cart-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 4000; display: none; flex-direction: column; padding: 20px; }
+        .cart-content { background: #1a1a1a; border-radius: 20px; padding: 20px; max-width: 500px; margin: auto; width: 100%; border: 1px solid var(--gold); }
+        .cart-item-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #333; }
+        .remove-btn { color: #ff4444; cursor: pointer; font-size: 1.1rem; }
+
+        footer { background: #0a0a0a; padding: 60px 20px 20px; text-align: center; border-top: 1px solid #222; margin-top: 50px; }
         .social-icons { margin: 20px 0; }
-        .social-icons a { color: var(--gold); font-size: 1.5rem; margin: 0 15px; text-decoration: none; }
-        .footer-info { color: #888; font-size: 0.9rem; margin-top: 20px; }
-
-        .cart-float {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; background: #25D366; color: white; padding: 15px;
-            border-radius: 50px; display: none; justify-content: space-between; z-index: 2000;
-        }
+        .social-icons a { color: var(--gold); font-size: 1.5rem; margin: 0 15px; }
+        .address-link { color: #ccc; text-decoration: none; cursor: pointer; transition: 0.3s; display: inline-block; margin-top: 10px; }
+        .cart-float { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; background: #25D366; color: white; padding: 15px; border-radius: 50px; display: none; justify-content: space-between; z-index: 2000; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="top-nav" id="navbar">
     <i class="fas fa-bars" onclick="toggleSidebar()" style="color:var(--gold); font-size:1.5rem; cursor:pointer;"></i>
-    <span style="font-weight: 900; color: var(--gold);">شط العرب</span>
-    <i class="fas fa-search" style="color:var(--gold);"></i>
+    <span id="current-category-name" style="font-weight: 900; color: var(--gold);">شط العرب</span>
+    <div style="width:24px"></div>
 </div>
 
 <div class="sidebar" id="sidebar">
     <i class="fas fa-times" onclick="toggleSidebar()" style="font-size:1.5rem; color:var(--gold); cursor:pointer;"></i>
-    <h2>أصناف السفرة العراقية</h2>
+    <h2>أصناف السفرة</h2>
     <div id="side-menu">
         <div class="cat-item" onclick="filter('الكل')">الكل</div>
         <div class="cat-item" onclick="filter('مشاوي')">مشاوي (كباب وتكة)</div>
         <div class="cat-item" onclick="filter('باجة')">باجة عراقية</div>
         <div class="cat-item" onclick="filter('قوزي')">قوزي وتمن</div>
         <div class="cat-item" onclick="filter('سمك')">سمك مسكوف</div>
-        <div class="cat-item" onclick="filter('دولمة')">دولمة بغدادية</div>
-        <div class="cat-item" onclick="filter('كبة')">كبة (حلب وموصل)</div>
-        <div class="cat-item" onclick="filter('تشريب')">تشريب (لحم ودجاج)</div>
-        <div class="cat-item" onclick="filter('فطور')">فطور صباحي</div>
-        <div class="cat-item" onclick="filter('حلويات')">حلويات عراقية</div>
+        <div class="cat-item" onclick="filter('دولمه')">دولمه بغدادية</div>
+        <div class="cat-item" onclick="filter('كبه')">كبه (موصل وحلب)</div>
+        <div class="cat-item" onclick="filter('برغر')">برغر</div>
+        <div class="cat-item" onclick="filter('صاج')">صاج</div>
+        <div class="cat-item" onclick="filter('باستا')">باستا</div>
+        <div class="cat-item" onclick="filter('سمبوسه')">سمبوسه</div>
         <div class="cat-item" onclick="filter('مشروبات')">مشروبات</div>
     </div>
 </div>
@@ -113,53 +81,62 @@
 <section class="hero">
     <h1>شط العرب</h1>
     <p>نأخذكم في رحلة إلى قلب بغداد مع كل لقمة. طعم الأصالة العراقية والوصفات المتوارثة، تُحضر بكل حب لتزين مائدتكم.</p>
-    <a href="#menu" class="hero-btn">تصفح القائمة</a>
+    <div class="hero-btns">
+        <a href="#menu" class="hero-btn">تصفح المنيو</a>
+        <a href="https://maps.google.com/?q=Basra" target="_blank" class="loc-btn">
+            <i class="fas fa-map-marked-alt"></i> موقعنا على الخارطة
+        </a>
+    </div>
 </section>
 
 <div id="menu"></div>
-<h2 class="section-title">قائمة الطعام</h2>
+<h2 class="section-title" id="menu-title">قائمة الطعام</h2>
 <div class="menu-grid" id="menu-container"></div>
+
+<div class="cart-modal" id="cart-modal">
+    <div class="cart-content">
+        <h3 style="color:var(--gold); margin-bottom:15px; text-align:center;">مراجعة الطلب</h3>
+        <div id="cart-items-list"></div>
+        <div style="margin-top:20px; display:flex; justify-content:space-between; font-weight:bold;">
+            <span>المجموع:</span>
+            <span id="modal-total">0 د.ع</span>
+        </div>
+        <button onclick="finalSend()" style="background:#25D366; color:white; border:none; width:100%; padding:12px; border-radius:10px; margin-top:15px; font-weight:bold;">تأكيد وإرسال واتساب</button>
+        <button onclick="closeCart()" style="background:transparent; color:#888; border:none; width:100%; margin-top:10px;">رجوع للمنيو</button>
+    </div>
+</div>
 
 <footer>
     <h2 style="color: var(--gold);">شط العرب</h2>
-    <p>نكهة الرافدين في كل لقمة</p>
-    
     <div class="social-icons">
         <a href="#"><i class="fab fa-facebook"></i></a>
         <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-tiktok"></i></a>
         <a href="https://wa.me/9647887603449"><i class="fab fa-whatsapp"></i></a>
     </div>
-
     <div style="margin: 20px 0;">
-        <p><i class="fas fa-map-marker-alt"></i> العراق - البصرة - كورنيش شط العرب</p>
-        <p><i class="fas fa-phone"></i> 07887603449</p>
+        <a href="https://maps.google.com/?q=Basra" target="_blank" class="address-link">
+            <p><i class="fas fa-map-marker-alt" style="color:var(--gold);"></i> العراق - البصرة - شط العرب</p>
+        </a>
+        <p style="margin-top:10px;"><i class="fas fa-phone" style="color:var(--gold);"></i> 07887603449</p>
     </div>
-
-    <div class="footer-info">
-        <p>جميع الحقوق محفوظة &copy; 2024 | تصميم وتطوير شط العرب</p>
-    </div>
+    <div class="footer-info"><p>جميع الحقوق محفوظة © 2026 | شط العرب</p></div>
 </footer>
 
-<div class="cart-float" id="cart-float" onclick="sendOrder()">
-    <span>إرسال الطلب للواتساب</span>
-    <span id="cart-total">0 د.ع</span>
+<div class="cart-float" id="cart-float" onclick="openCart()">
+    <span>مراجعة السلة</span>
+    <span id="cart-total-display">0 د.ع</span>
 </div>
 
 <script>
 const sheetID = '1laj-jG9Q18PIEkUivgsTG_iZN4nrbZsAnLu_9ZuMyk0';
 const url = `https://docs.google.com/spreadsheets/d/${sheetID}/gviz/tq?tqx=out:json`;
 
-let items = [];
-let cart = [];
+let items = []; let cart = [];
 
 fetch(url).then(r => r.text()).then(d => {
     const json = JSON.parse(d.substring(47, d.length - 2));
     items = json.table.rows.slice(1).map(r => ({
-        n: r.c[0]?.v || '',
-        cat: r.c[1]?.v || 'عام',
-        p: r.c[2]?.v || 0,
-        im: r.c[3]?.v || ''
+        n: r.c[0]?.v || '', cat: r.c[1]?.v || 'عام', p: r.c[2]?.v || 0, im: r.c[3]?.v || ''
     }));
     show('الكل');
 });
@@ -177,29 +154,37 @@ function show(cat) {
             </div>
         </div>
     `).join('');
+    document.getElementById('menu-title').innerText = cat === 'الكل' ? 'قائمة الطعام' : cat;
 }
 
-function filter(c) { show(c); toggleSidebar(); window.location.hash = "menu"; }
-function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
-
-function add(n, p) {
-    cart.push({n, p});
+function add(n, p) { cart.push({n, p, id: Date.now()}); updateCartUI(); }
+function removeItem(id) { cart = cart.filter(i => i.id !== id); updateCartUI(); renderCartList(); }
+function updateCartUI() {
     const total = cart.reduce((s, i) => s + i.p, 0);
-    document.getElementById('cart-total').innerText = total + " د.ع";
-    document.getElementById('cart-float').style.display = 'flex';
+    document.getElementById('cart-total-display').innerText = total + " د.ع";
+    document.getElementById('modal-total').innerText = total + " د.ع";
+    document.getElementById('cart-float').style.display = cart.length > 0 ? 'flex' : 'none';
 }
+function renderCartList() {
+    const list = document.getElementById('cart-items-list');
+    list.innerHTML = cart.map(i => `<div class="cart-item-row"><span>${i.n}</span><div><span style="margin-left:10px;">${i.p}</span><i class="fas fa-trash-alt remove-btn" onclick="removeItem(${i.id})"></i></div></div>`).join('');
+    if(cart.length === 0) closeCart();
+}
+function openCart() { renderCartList(); document.getElementById('cart-modal').style.display = 'flex'; }
+function closeCart() { document.getElementById('cart-modal').style.display = 'none'; }
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('active'); }
+function filter(c) { show(c); toggleSidebar(); window.location.hash = "menu"; }
 
-function sendOrder() {
+function finalSend() {
     let msg = "*طلب جديد من شط العرب*\n";
-    cart.forEach(i => msg += `- ${i.n}\n`);
-    msg += `\n*المجموع: ${document.getElementById('cart-total').innerText}*`;
+    cart.forEach(i => msg += `- ${i.n} (${i.p} د.ع)\n`);
+    msg += `\n*المجموع الكلي: ${document.getElementById('modal-total').innerText}*`;
     window.open(`https://wa.me/9647887603449?text=${encodeURIComponent(msg)}`);
 }
 
 window.onscroll = function() {
     const nav = document.getElementById('navbar');
-    if (window.pageYOffset > 50) { nav.style.background = "#0a0a0a"; } 
-    else { nav.style.background = "rgba(0,0,0,0.5)"; }
+    nav.style.background = window.pageYOffset > 50 ? "#0a0a0a" : "rgba(0,0,0,0.5)";
 };
 </script>
 </body>
